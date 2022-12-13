@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Redirect, Render, } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Redirect, Render, } from '@nestjs/common';
 import { AppService } from './app.service';
 import db from './db';
 import { MacskaDTO } from './macska.dto';
@@ -36,11 +36,11 @@ export class AppController {
     };
   }
 
-  @Get('cats/:szem_szin')
+  @Get('cats/show')
   @Render('show')
-  async showMacskak(@Param('szem_szin') szem_szin: string) {
+  async showMacskak(@Query('szem_szin') szem_szin: string) {
     const [rows] = await db.execute(
-      'SELECT suly, szem_szin FROM macskak WHERE szem_szin = ?',
+      'SELECT suly, szem_szin FROM macskak WHERE szem_szin LIKE ?',
       [szem_szin],
     );
     return { macskak: rows };
